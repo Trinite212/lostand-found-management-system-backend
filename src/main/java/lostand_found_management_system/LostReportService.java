@@ -1,5 +1,6 @@
 package lostand_found_management_system;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -20,6 +21,14 @@ public class LostReportService {
 
     public List<LostReport> getAll() {
         return lostReportRepository.findAll();
+    }
+
+    public List<LostReport> getByStatus(ReportStatus status) {
+        return lostReportRepository.findByStatusOrderByReportDateAsc(status);
+    }
+
+    public List<LostReport> getBetweenDates(LocalDate start, LocalDate end) {
+        return lostReportRepository.findByReportDateBetweenOrderByReportDateAsc(start, end);
     }
 
     public Optional<LostReport> getById(UUID id) {

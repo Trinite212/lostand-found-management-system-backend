@@ -22,6 +22,10 @@ public class OwnerService {
         return ownerRepository.findAll();
     }
 
+    public List<Owner> getByLastName(String lastName) {
+        return ownerRepository.findByLastNameIgnoreCaseOrderByFirstNameAsc(lastName);
+    }
+
     public Optional<Owner> getById(UUID id) {
         return ownerRepository.findById(id);
     }

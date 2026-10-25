@@ -1,5 +1,6 @@
 package lostand_found_management_system;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -31,6 +33,20 @@ public class LostReportController {
     @GetMapping("/all")
     public ResponseEntity<List<LostReport>> getAll() {
         return ResponseEntity.ok(lostReportService.getAll());
+    }
+
+    @GetMapping("/by-status")
+    public ResponseEntity<List<LostReport>> getByStatus(@RequestParam ReportStatus status) {
+        return ResponseEntity.ok(lostReportService.getByStatus(status));
+    }
+
+    @GetMapping("/between")
+    public ResponseEntity<List<LostReport>> getBetweenDates(
+            @RequestParam String start,
+            @RequestParam String end) {
+        return ResponseEntity.ok(lostReportService.getBetweenDates(
+                LocalDate.parse(start),
+                LocalDate.parse(end)));
     }
 
     @GetMapping("/{id}")

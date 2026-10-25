@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,6 +32,11 @@ public class OwnerController {
     @GetMapping("/all")
     public ResponseEntity<List<Owner>> getAll() {
         return ResponseEntity.ok(ownerService.getAll());
+    }
+
+    @GetMapping("/by-last-name")
+    public ResponseEntity<List<Owner>> getByLastName(@RequestParam String lastName) {
+        return ResponseEntity.ok(ownerService.getByLastName(lastName));
     }
 
     @GetMapping("/{id}")
