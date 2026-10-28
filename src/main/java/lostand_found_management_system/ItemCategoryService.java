@@ -22,6 +22,10 @@ public class ItemCategoryService {
         return itemCategoryRepository.findAll();
     }
 
+    public List<ItemCategory> getUnusedCategories() {
+        return itemCategoryRepository.findUnusedCategories();
+    }
+
     public Optional<ItemCategory> getById(UUID id) {
         return itemCategoryRepository.findById(id);
     }

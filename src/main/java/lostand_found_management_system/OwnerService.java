@@ -8,9 +8,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class OwnerService {
     private final OwnerRepository ownerRepository;
+    private final DeskClerkRepository deskClerkRepository;
 
-    public OwnerService(OwnerRepository ownerRepository) {
+    public OwnerService(OwnerRepository ownerRepository, DeskClerkRepository deskClerkRepository) {
         this.ownerRepository = ownerRepository;
+        this.deskClerkRepository = deskClerkRepository;
     }
 
     public String save(Owner owner) {
@@ -24,6 +26,13 @@ public class OwnerService {
 
     public List<Owner> getByLastName(String lastName) {
         return ownerRepository.findByLastNameIgnoreCaseOrderByFirstNameAsc(lastName);
+    }
+
+    public Optional<List<Owner>> getByDeskClerk(UUID deskClerkId) {
+        if (!deskClerkRepository.existsById(deskClerkId)) {
+            return Optional.empty();
+        }
+        return Optional.of(ownerRepository.findByDeskClerkId(deskClerkId));
     }
 
     public Optional<Owner> getById(UUID id) {

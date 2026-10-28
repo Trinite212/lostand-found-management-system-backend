@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,6 +32,11 @@ public class DeskClerkController {
     @GetMapping("/all")
     public ResponseEntity<List<DeskClerk>> getAll() {
         return ResponseEntity.ok(deskClerkService.getAll());
+    }
+
+    @GetMapping("/by-item-category")
+    public ResponseEntity<List<DeskClerk>> getByItemCategoryName(@RequestParam("name") String name) {
+        return ResponseEntity.ok(deskClerkService.getByItemCategoryName(name));
     }
 
     @GetMapping("/{id}")

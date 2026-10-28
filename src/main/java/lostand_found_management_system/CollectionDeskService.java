@@ -22,6 +22,10 @@ public class CollectionDeskService {
         return collectionDeskRepository.findAll();
     }
 
+    public List<CollectionDesk> getFreeDesks() {
+        return collectionDeskRepository.findFreeDesks();
+    }
+
     public Optional<CollectionDesk> getById(UUID id) {
         return collectionDeskRepository.findById(id);
     }

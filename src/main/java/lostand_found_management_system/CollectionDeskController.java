@@ -33,6 +33,11 @@ public class CollectionDeskController {
         return ResponseEntity.ok(collectionDeskService.getAll());
     }
 
+    @GetMapping("/free")
+    public ResponseEntity<List<CollectionDesk>> getFreeDesks() {
+        return ResponseEntity.ok(collectionDeskService.getFreeDesks());
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable UUID id) {
         Optional<CollectionDesk> collectionDesk = collectionDeskService.getById(id);

@@ -33,6 +33,11 @@ public class ItemCategoryController {
         return ResponseEntity.ok(itemCategoryService.getAll());
     }
 
+    @GetMapping("/unused")
+    public ResponseEntity<List<ItemCategory>> getUnusedCategories() {
+        return ResponseEntity.ok(itemCategoryService.getUnusedCategories());
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable UUID id) {
         Optional<ItemCategory> itemCategory = itemCategoryService.getById(id);

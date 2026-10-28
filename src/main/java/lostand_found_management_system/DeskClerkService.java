@@ -22,6 +22,10 @@ public class DeskClerkService {
         return deskClerkRepository.findAll();
     }
 
+    public List<DeskClerk> getByItemCategoryName(String name) {
+        return deskClerkRepository.findByItemCategoryNameIgnoreCase(name);
+    }
+
     public Optional<DeskClerk> getById(UUID id) {
         return deskClerkRepository.findById(id);
     }

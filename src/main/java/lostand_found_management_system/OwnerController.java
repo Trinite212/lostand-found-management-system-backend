@@ -39,6 +39,16 @@ public class OwnerController {
         return ResponseEntity.ok(ownerService.getByLastName(lastName));
     }
 
+    @GetMapping("/of-desk-clerk/{deskClerkId}")
+    public ResponseEntity<?> getByDeskClerk(@PathVariable UUID deskClerkId) {
+        Optional<List<Owner>> owners = ownerService.getByDeskClerk(deskClerkId);
+        if (owners.isPresent()) {
+            return ResponseEntity.ok(owners.get());
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body("The desk clerk with that id does not exist");
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable UUID id) {
         Optional<Owner> owner = ownerService.getById(id);
