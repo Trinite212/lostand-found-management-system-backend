@@ -9,4 +9,9 @@ public interface LostReportRepository extends JpaRepository<LostReport, UUID> {
     List<LostReport> findByStatusOrderByReportDateAsc(ReportStatus status);
 
     List<LostReport> findByReportDateBetweenOrderByReportDateAsc(LocalDate start, LocalDate end);
+
+    boolean existsByDeskClerkAndReportDateAndStatusNot(
+            DeskClerk deskClerk,
+            LocalDate reportDate,
+            ReportStatus status);
 }

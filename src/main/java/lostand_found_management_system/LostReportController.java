@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,7 +28,14 @@ public class LostReportController {
 
     @PostMapping("/save")
     public ResponseEntity<String> save(@RequestBody LostReport lostReport) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(lostReportService.save(lostReport));
+        String message = lostReportService.save(lostReport);
+        if (message.equals("Lost report date cannot be in the past")) {
+            return ResponseEntity.badRequest().body(message);
+        }
+        if (message.equals("Desk clerk already has a report assigned on that date")) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(message);
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(message);
     }
 
     @GetMapping("/all")
@@ -58,6 +66,21 @@ public class LostReportController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("The lost report with that id does not exist");
         }
+    }
+
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<String> updateStatus(
+            @PathVariable UUID id,
+            @RequestParam("status") ReportStatus status) {
+        Optional<String> message = lostReportService.updateStatus(id, status);
+        if (message.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("The lost report with that id does not exist");
+        }
+        if (message.get().startsWith("Cannot change status from ")) {
+            return ResponseEntity.badRequest().body(message.get());
+        }
+        return ResponseEntity.ok(message.get());
     }
 
     @PutMapping("/update/{id}")
