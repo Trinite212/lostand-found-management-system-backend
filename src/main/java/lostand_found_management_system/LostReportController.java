@@ -98,6 +98,8 @@ public class LostReportController {
         String message = lostReportService.delete(id);
         if (message.equals("The lost report with that id does not exist")) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
+        } else if (message.equals("That lost report has handover notes, delete them first")) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(message);
         } else {
             return ResponseEntity.ok(message);
         }

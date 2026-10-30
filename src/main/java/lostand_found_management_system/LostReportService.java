@@ -10,9 +10,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class LostReportService {
     private final LostReportRepository lostReportRepository;
+    private final HandoverNoteRepository handoverNoteRepository;
 
-    public LostReportService(LostReportRepository lostReportRepository) {
+    public LostReportService(
+            LostReportRepository lostReportRepository,
+            HandoverNoteRepository handoverNoteRepository) {
         this.lostReportRepository = lostReportRepository;
+        this.handoverNoteRepository = handoverNoteRepository;
     }
 
     public String save(LostReport lostReport) {
@@ -85,7 +89,11 @@ public class LostReportService {
     }
 
     public String delete(UUID id) {
-        if (lostReportRepository.existsById(id)) {
+        Optional<LostReport> lostReport = lostReportRepository.findById(id);
+        if (lostReport.isPresent()) {
+            if (handoverNoteRepository.existsByLostReport(lostReport.get())) {
+                return "That lost report has handover notes, delete them first";
+            }
             lostReportRepository.deleteById(id);
             return "Lost report deleted successfully";
         }
